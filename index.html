@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phoenix Flight</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #000000;
+            color: white;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .logo-container {
+            position: relative;
+            width: 50px;
+            height: 50px;
+        }
+
+        .fractal-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, #00ff00, #ff0000, #0000ff, #ffff00, #ff00ff, #00ffff, #00ff00);
+            animation: spin 3s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .logo {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: black;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            z-index: 2;
+        }
+
+        .main-content {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 40px;
+            position: relative;
+        }
+
+        .title-container {
+            position: relative;
+            margin-bottom: 3rem;
+        }
+
+        .flame-bg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 120%;
+            height: 120%;
+            background: radial-gradient(ellipse at center, 
+                rgba(0, 255, 0, 0.8) 0%,
+                rgba(255, 255, 0, 0.6) 20%,
+                rgba(255, 0, 255, 0.4) 40%,
+                rgba(0, 255, 255, 0.3) 60%,
+                rgba(255, 100, 0, 0.2) 80%,
+                transparent 100%);
+            filter: blur(40px);
+            animation: flameFlicker 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes flameFlicker {
+            0% { 
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0.8;
+            }
+            100% { 
+                transform: translate(-50%, -50%) scale(1.2);
+                opacity: 0.6;
+            }
+        }
+
+        .title {
+            font-size: clamp(6rem, 15vw, 12rem);
+            font-weight: 800;
+            position: relative;
+            z-index: 2;
+            background: linear-gradient(45deg, 
+                #00ff00 0%,
+                #ffff00 25%,
+                #ff00ff 50%,
+                #00ffff 75%,
+                #00ff00 100%);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: rainbowShift 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 20px rgba(0, 255, 0, 0.5));
+        }
+
+        @keyframes rainbowShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .subtitle {
+            font-size: clamp(1rem, 2.5vw, 1.5rem);
+            margin-bottom: 3rem;
+            max-width: 800px;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 300;
+            font-family: 'Courier New', monospace;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            background: linear-gradient(45deg, 
+                #ffffff 0%,
+                #00ff00 25%,
+                #ffffff 50%,
+                #00ffff 75%,
+                #ffffff 100%);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: subtitleGlow 4s ease-in-out infinite;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
+        }
+
+        @keyframes subtitleGlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .btn-primary {
+            background: rgba(0, 255, 0, 0.1);
+            border-color: rgba(0, 255, 0, 0.5);
+            color: #00ff00;
+        }
+
+        .btn-primary:hover {
+            background: rgba(0, 255, 0, 0.2);
+            border-color: #00ff00;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 35px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            display: flex;
+            justify-content: center;
+            padding-top: 8px;
+        }
+
+        .scroll-indicator::before {
+            content: '';
+            width: 3px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 2px;
+            animation: scrollDot 2s infinite;
+        }
+
+        @keyframes scrollDot {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(15px); opacity: 0; }
+        }
+
+        .phoenix-page {
+            display: none;
+            min-height: 100vh;
+            position: relative;
+            background: #000000;
+            padding: 20px;
+        }
+
+        .phoenix-title {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: clamp(4rem, 12vw, 16rem);
+            font-weight: 900;
+            background: linear-gradient(45deg, 
+                #00ff00 0%,
+                #ffff00 25%,
+                #ff00ff 50%,
+                #00ffff 75%,
+                #00ff00 100%);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: rainbowShift 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 30px rgba(0, 255, 0, 0.5));
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .shadertoy-container {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 255, 0, 0.3);
+            border: 1px solid rgba(0, 255, 0, 0.2);
+        }
+
+        .back-button {
+            position: absolute;
+            top: 50px;
+            right: 50px;
+            width: 250px;
+            height: 80px;
+            border-radius: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+            transition: all 0.3s ease;
+            overflow: hidden;
+            z-index: 10;
+        }
+
+        .back-button-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: conic-gradient(from 0deg, 
+                #ff0000 0deg, 
+                #ff8000 45deg, 
+                #ffff00 90deg, 
+                #80ff00 135deg, 
+                #00ff00 180deg, 
+                #00ff80 225deg, 
+                #00ffff 270deg, 
+                #8000ff 315deg, 
+                #ff0000 360deg);
+            animation: fractalSpin 3s linear infinite;
+            border-radius: 20px;
+        }
+
+        @keyframes fractalSpin {
+            from { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.1); }
+            to { transform: rotate(360deg) scale(1); }
+        }
+
+        .back-button span {
+            position: relative;
+            z-index: 2;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px 25px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .back-button:hover {
+            transform: scale(1.05);
+            filter: brightness(1.2);
+        }
+
+        .back-button:hover .back-button-bg {
+            animation-duration: 1s;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 15px 20px;
+            }
+            
+            .main-content {
+                padding: 0 20px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .phoenix-title {
+                white-space: normal;
+                line-height: 0.9;
+            }
+
+            .shadertoy-container {
+                position: relative;
+                top: 20px;
+                left: 0;
+                width: 100%;
+                max-width: 400px;
+                margin: 0 auto 20px;
+            }
+
+            .shadertoy-container iframe {
+                width: 100%;
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo-container">
+            <div class="fractal-bg"></div>
+            <div class="logo">PF</div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="title-container">
+            <div class="flame-bg"></div>
+            <h1 class="title">Phoenix</h1>
+        </div>
+        
+        <p class="subtitle">
+            We are thrilled to unveil Phoenix Flight, a new chat bot that transports you to other worlds and dimensions.
+        </p>
+
+        <div class="action-buttons">
+            <a href="#" class="btn btn-primary" onclick="showPhoenixPage()">CHAT WITH PHOENIX FLIGHT CHARACTERS AND PERSONAS</a>
+        </div>
+
+        <div class="scroll-indicator"></div>
+    </main>
+
+    <div class="phoenix-page" id="phoenix-page">
+        <div class="back-button" onclick="showMainPage()">
+            <div class="back-button-bg"></div>
+            <span>← BACK TO MAIN</span>
+        </div>
+        
+        <div class="shadertoy-container">
+            <div style="width: 640px; height: 360px; background: linear-gradient(45deg, #00ff00, #ffff00, #ff00ff, #00ffff); display: flex; align-items: center; justify-content: center; color: black; font-weight: bold; font-size: 18px;">
+                Interactive Demo Placeholder
+            </div>
+        </div>
+        
+        <h1 class="phoenix-title">PHOENIX FLIGHT</h1>
+    </div>
+
+    <script>
+        function showPhoenixPage() {
+            document.querySelector('main').style.display = 'none';
+            document.querySelector('header').style.display = 'none';
+            document.getElementById('phoenix-page').style.display = 'block';
+        }
+
+        function showMainPage() {
+            document.querySelector('main').style.display = 'flex';
+            document.querySelector('header').style.display = 'flex';
+            document.getElementById('phoenix-page').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
